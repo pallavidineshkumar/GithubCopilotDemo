@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Slider Demo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .slider {
+      position: relative;
+      width: 600px;
+      height: 400px;
+      overflow: hidden;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+    .slides {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.5s ease-in-out;
+    }
+    .slides img {
+      width: 600px;
+      height: 400px;
+      object-fit: cover;
+    }
+    .navigation {
+      position: absolute;
+      width: 100%;
+      bottom: 15px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #ddd;
+      cursor: pointer;
+    }
+    .dot.active {
+      background: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="slider">
+    <div class="slides" id="slides">
+      <img src="https://picsum.photos/id/1015/600/400" alt="Slide 1">
+      <img src="https://picsum.photos/id/1016/600/400" alt="Slide 2">
+      <img src="https://picsum.photos/id/1018/600/400" alt="Slide 3">
+      <img src="https://picsum.photos/id/1020/600/400" alt="Slide 4">
+    </div>
+    <div class="navigation" id="navigation"></div>
+  </div>
+
+  <script>
+    const slides = document.getElementById('slides');
+    const nav = document.getElementById('navigation');
+    const totalSlides = slides.children.length;
+    let index = 0;
+
+    // Create navigation dots
+    for (let i = 0; i < totalSlides; i++) {
+      const dot = document.createElement('div');
+      dot.classList.add('dot');
+      if (i === 0) dot.classList.add('active');
+      dot.addEventListener('click', () => moveToSlide(i));
+      nav.appendChild(dot);
+    }
+
+    function moveToSlide(i) {
+      slides.style.transform = `translateX(-${i * 600}px)`;
+      nav.querySelectorAll('.dot').forEach(dot => dot.classList.remove('active'));
+      nav.children[i].classList.add('active');
+      index = i;
+    }
+
+    // Auto slide every 3 seconds
+    setInterval(() => {
+      index = (index + 1) % totalSlides;
+      moveToSlide(index);
+    }, 3000);
+  </script>
+</body>
+</html>
